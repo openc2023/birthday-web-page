@@ -284,7 +284,7 @@ const HERO_SLIDES = [
 /* --------- 轮播 --------- */
 const hero = document.querySelector('.hero');
 const dotsBox = document.getElementById('dots');
-let idx=0;
+let idx = 0; // 显式设置初始索引为0，确保从第一个幻灯片开始
 HERO_SLIDES.forEach((s,i)=>{
   const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); dotsBox.appendChild(d);
   const el=document.createElement('div'); el.className='slide'+(i===0?' active':'');
