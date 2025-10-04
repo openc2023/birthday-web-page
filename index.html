@@ -120,14 +120,90 @@ a{color:inherit;text-decoration:none}
 .banner h3{margin:0 0 6px}
 
 /* 彩蛋按钮/弹层 */
-.egg-btn{position:fixed;right:14px;bottom:86px;z-index:40;background:var(--brand);color:#fff;border:none;border-radius:999px;padding:12px 14px;box-shadow:0 10px 18px rgba(232,93,106,.3);cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60}
-.modal.show{display:flex}
-.modal .box{width:min(520px,92vw);background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center}
-.modal .box h3{margin-top:0}
+.egg-btn{
+  position:fixed;
+  right:14px;
+  bottom:86px;
+  z-index:40;
+  background:var(--brand);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  padding:12px 14px;
+  box-shadow:0 10px 18px rgba(232,93,106,.3);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+  transition:all 0.3s ease;
+  animation:float 3s ease-in-out infinite;
+}
+
+/* 添加浮动动画 */
+@keyframes float {
+  0%, 100% { transform:translateY(0); }
+  50% { transform:translateY(-6px); }
+}
+
+.egg-btn:hover{
+  background:var(--brand-dark, #d94f5d);
+  transform:scale(1.05);
+  box-shadow:0 12px 24px rgba(232,93,106,.4);
+}
+
+.egg-btn:active{
+  transform:scale(0.98);
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:60;
+  backdrop-filter:blur(4px);
+  transition:opacity 0.3s ease;
+}
+
+.modal.show{
+  display:flex;
+  opacity:1;
+}
+
+.modal .box{
+  width:min(520px,92vw);
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  text-align:center;
+  transform:scale(0.95);
+  animation:modalShow 0.3s ease forwards;
+}
+
+@keyframes modalShow {
+  to { transform:scale(1); }
+}
+
+.modal .box h3{
+  margin-top:0;
+  color:var(--brand);
+}
 
 /* 底部播放器 */
-.player{position:fixed;left:0;right:0;bottom:0;background:#f8f9fa;color:#333;border-top:1px solid #e9ecef;z-index:55}
+.player{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#f8f9fa;
+  color:#333;
+  border-top:1px solid #e9ecef;
+  z-index:55;
+}
 .player .wrap{display:flex;align-items:center;gap:12px;padding:10px 14px}
 .btn{background:#e9ecef;border:1px solid #dee2e6;color:#495057;border-radius:10px;padding:8px 12px;cursor:pointer}
 #play{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -199,6 +275,20 @@ a{color:inherit;text-decoration:none}
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+  }
+  
+  /* 彩蛋按钮移动端优化 */
+  .egg-btn{
+    right:10px;
+    bottom:80px;
+    padding:10px 12px;
+    font-size:14px;
+    z-index:40;
+  }
+  
+  .egg-btn svg{
+    width:20px;
+    height:20px;
   }
 }
 </style>
@@ -280,8 +370,8 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="gallery" id="gallery">
     <!-- data-year 按钮筛选 -->
-    <img src="assets/img/photos/g1.jpg" data-year="2022" alt="">
-    <img src="assets/img/photos/g2.jpg" data-year="2021" alt="">
+#    <img src="assets/img/photos/g1.jpg" data-year="2022" alt="">
+#    <img src="assets/img/photos/g2.jpg" data-year="2021" alt="">
     <img src="assets/img/photos/g3.jpg" data-year="2021" alt="">
     <img src="assets/img/photos/g4.jpg" data-year="2020" alt="">
     <img src="assets/img/photos/g5.jpg" data-year="2022" alt="">
@@ -340,7 +430,7 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- 彩蛋按钮 -->
-<button class="egg-btn" id="egg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="color:var(--brand)"><path fill="currentColor" fill-rule="evenodd" d="M12 1.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M5.47 5.47a.75.75 0 0 1 1.06 0l.344.343a.75.75 0 0 1-1.061 1.06L5.47 6.53a.75.75 0 0 1 0-1.06m13.06 0a.75.75 0 0 1 0 1.06l-.343.344a.75.75 0 0 1-1.06-1.061l.343-.343a.75.75 0 0 1 1.06 0M1.25 12a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m18 0a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1-.75-.75M6.873 17.127a.75.75 0 0 1 0 1.06l-.343.343a.75.75 0 0 1-1.06-1.06l.343-.343a.75.75 0 0 1 1.06 0m10.254 0a.75.75 0 0 1 1.06 0l.343.343a.75.75 0 1 1-1.06 1.06l-.343-.343a.75.75 0 0 1 0-1.06M12 19.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75" clip-rule="evenodd"/><path fill="currentColor" d="M7 11.06c0 2.542 2.01 3.897 3.48 5.11c.52.427 1.02.83 1.52.83s1-.403 1.52-.83c1.47-1.213 3.48-2.568 3.48-5.11s-2.75-4.346-5-1.902c-2.25-2.444-5-.64-5 1.902"/></svg> 彩蛋</button>
+<button class="egg-btn" id="egg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="color:#FFE8F0"><path fill="currentColor" fill-rule="evenodd" d="M12 1.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M5.47 5.47a.75.75 0 0 1 1.06 0l.344.343a.75.75 0 0 1-1.061 1.06L5.47 6.53a.75.75 0 0 1 0-1.06m13.06 0a.75.75 0 0 1 0 1.06l-.343.344a.75.75 0 0 1-1.06-1.061l.343-.343a.75.75 0 0 1 1.06 0M1.25 12a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m18 0a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1-.75-.75M6.873 17.127a.75.75 0 0 1 0 1.06l-.343.343a.75.75 0 0 1-1.06-1.06l.343-.343a.75.75 0 0 1 1.06 0m10.254 0a.75.75 0 0 1 1.06 0l.343.343a.75.75 0 1 1-1.06 1.06l-.343-.343a.75.75 0 0 1 0-1.06M12 19.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75" clip-rule="evenodd"/><path fill="currentColor" d="M7 11.06c0 2.542 2.01 3.897 3.48 5.11c.52.427 1.02.83 1.52.83s1-.403 1.52-.83c1.47-1.213 3.48-2.568 3.48-5.11s-2.75-4.346-5-1.902c-2.25-2.444-5-.64-5 1.902"/></svg> 彩蛋</button>
 <div class="modal" id="modal">
   <div class="box">
     <h3>给你的小彩蛋❤️</h3>
@@ -472,22 +562,153 @@ pics.forEach(img=>{
 /* --------- 彩蛋弹层 --------- */
 const modal=document.getElementById('modal'), egg=document.getElementById('egg'), closeM=document.getElementById('close-modal'), eggAudio=document.getElementById('egg-audio');
 
-eggAudio.onerror=()=>{
-  // 音频加载错误处理
+// 优化音频加载错误处理
+function handleAudioError() {
   const audioError = document.createElement('p');
   audioError.style.color='var(--brand)';
+  audioError.style.marginTop='12px';
   audioError.textContent='请添加实际的音频文件到 assets/audio/ 目录';
-  document.querySelector('.modal .box').appendChild(audioError);
+  const box = document.querySelector('.modal .box');
+  
+  // 避免重复添加错误信息
+  if (!box.querySelector('p[style*="var(--brand)"]')) {
+    box.appendChild(audioError);
+  }
+}
+
+eggAudio.onerror=handleAudioError;
+
+// 检查音频是否可播放
+function checkAudioPlayability() {
+  eggAudio.oncanplaythrough = null;
+  
+  // 使用try-catch处理可能的音频加载问题
+  try {
+    // 预加载音频，但不自动播放
+    eggAudio.load();
+  } catch (error) {
+    handleAudioError();
+  }
+}
+
+// 页面加载完成后检查音频
+window.addEventListener('DOMContentLoaded', checkAudioPlayability);
+
+// 优化彩蛋按钮交互
+let isModalOpen = false;
+
+egg.onclick=()=>{
+  if (!isModalOpen) {
+    // 添加触摸反馈动画
+    egg.classList.add('pulse');
+    setTimeout(() => egg.classList.remove('pulse'), 300);
+    
+    modal.classList.add('show');
+    isModalOpen = true;
+    
+    // 降低背景音乐音量
+    if (audio && typeof audio.volume !== 'undefined') {
+      audio.volume = 0.4;
+    }
+    
+    // 尝试播放彩蛋音频
+    try {
+      if (eggAudio) {
+        eggAudio.currentTime = 0;
+        eggAudio.play().catch(e => {
+          console.log('Audio play failed:', e);
+          handleAudioError();
+        });
+      }
+    } catch (e) {
+      handleAudioError();
+    }
+  }
 };
 
-egg.onclick=()=>{ modal.classList.add('show'); audio.volume=.4; }
-closeM.onclick=()=>{ modal.classList.remove('show'); audio.volume=1; eggAudio.pause(); eggAudio.currentTime=0; }
-modal.addEventListener('click',e=>{ if(e.target===modal) closeM.click(); });
+closeM.onclick=()=>{
+  if (isModalOpen) {
+    modal.classList.remove('show');
+    isModalOpen = false;
+    
+    // 恢复背景音乐音量
+    if (audio && typeof audio.volume !== 'undefined') {
+      audio.volume = 1;
+    }
+    
+    // 停止彩蛋音频
+    try {
+      if (eggAudio) {
+        eggAudio.pause();
+        eggAudio.currentTime = 0;
+      }
+    } catch (e) {
+      console.log('Audio pause failed:', e);
+    }
+  }
+};
+
+modal.addEventListener('click',e=>{
+  if(e.target===modal) {
+    closeM.click();
+  }
+});
+
+// 移动端优化：触摸事件支持
+if ('ontouchstart' in window) {
+  egg.addEventListener('touchstart', function(e) {
+    // 阻止默认行为，避免触发其他事件
+    e.preventDefault();
+    this.onclick();
+  });
+  
+  closeM.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    this.onclick();
+  });
+  
+  modal.addEventListener('touchstart', function(e) {
+    if(e.target===modal) {
+      e.preventDefault();
+      closeM.click();
+    }
+  });
+}
+
+// 优化键盘可访问性
+modal.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeM.click();
+  }
+});
+
+// 设置焦点管理
+modal.addEventListener('transitionend', function() {
+  if (isModalOpen) {
+    closeM.focus();
+  } else {
+    egg.focus();
+  }
+});
 
 /* --------- 本地存储「已打开」徽记（可扩展） --------- */
 try{
-  if(!localStorage.getItem('opened')){ localStorage.setItem('opened', Date.now()); }
+  if(!localStorage.getItem('opened')){
+    localStorage.setItem('opened', Date.now());
+  }
 }catch(err){}
+
+// 为按钮添加触摸反馈样式
+.egg-btn.pulse {
+  animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
 </script>
 <script>
     // 汉堡菜单交互逻辑
@@ -513,4 +734,4 @@ try{
     });
   </script>
   </body>
-</html>
+  </html>
