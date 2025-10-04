@@ -1,0 +1,1 @@
+请将banner背景图片命名为sunset.jpg并放在此目录

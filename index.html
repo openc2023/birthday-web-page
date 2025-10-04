@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>送永远18岁的朵拉</title>
+<style>
+:root{
+  --brand:#e85d6a; --brand-2:#ff9aa2; --ink:#222; --muted:#6b7280; --paper:#ffffff;
+  --bg:#0c0f13; --card:#ffffffcc; --ring:rgba(0,0,0,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#f6f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{width:min(1100px,92vw);margin:0 auto}
+
+/* 顶部导航 */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid #eee}
+.nav .wrap{display:flex;align-items:center;gap:18px;padding:14px 10px}
+.brand{font-weight:700}
+.nav ul{display:flex;gap:18px;margin:0 0 0 auto;padding:0;list-style:none}
+.nav a{padding:8px 10px;border-radius:8px}
+.nav a:hover{background:var(--ring)}
+/* 汉堡菜单按钮 */
+.hamburger{display:none;background:none;border:none;font-size:24px;cursor:pointer;margin-left:auto}
+/* 移动端导航菜单 */
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.1);z-index:49}
+.mobile-nav.show{display:block}
+.mobile-nav ul{display:flex;flex-direction:column;gap:0;padding:0;margin:0}
+.mobile-nav li{border-bottom:1px solid #eee}
+.mobile-nav a{display:block;padding:16px 20px}
+
+/* 封面轮播 */
+.hero{position:relative;height:78vh;min-height:520px;display:grid;place-items:center;color:#fff;overflow:hidden;background:#000}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
+.slide.active{opacity:1}
+.slide .bg{position:absolute;inset:0;background-position:center;background-size:cover;filter:brightness(.65)}
+.slide .shade{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.1),rgba(0,0,0,.6))}
+.hero .content{position:relative;z-index:2;text-align:center;padding:0 6vw}
+.hero h1{font-size:clamp(22px,3.5vw,40px);margin:.2em 0 .4em}
+.hero p{opacity:.95;font-size:clamp(14px,2.2vw,18px)}
+.hero .cta{margin-top:18px;display:inline-block;background:var(--brand);color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 8px 16px rgba(232,93,106,.25)}
+.hero .cta:hover{filter:brightness(1.05)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);cursor:pointer}
+.arrow:hover{background:rgba(255,255,255,.28)}
+.arrow.left{left:14px} .arrow.right{right:14px}
+.dots{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
+.dot.active{background:#fff}
+
+/* 计数条 */
+.stats{background:#f8f9fa;color:#495057;padding:38px 0}
+.stats .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.stat{display:flex;flex-direction:column;align-items:center;gap:6px;background:#ffffff;border:1px solid #e9ecef;padding:20px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.04)}
+.stat .num{font-size:36px;font-weight:800;letter-spacing:1px;color:#ff8fab}
+.stat .label{opacity:.9;color:#495057}
+
+/* 分节标题 */
+.section{padding:56px 0}
+.section h2{font-size:28px;text-align:center;margin:0 0 6px}
+.section .sub{color:var(--muted);text-align:center;margin-bottom:22px}
+.hr{width:72px;height:4px;background:var(--brand);margin:8px auto 24px;border-radius:6px}
+
+/* 想对你说（卡片） */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--paper);border-radius:14px;box-shadow:0 8px 20px rgba(10,10,10,.06);padding:18px;height:220px;display:flex;align-items:end;background-size:cover;background-position:center;position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.45))}
+.card .txt{position:relative;color:#fff;font-weight:600}
+
+/* 图集 + 年份筛选 */
+.filters{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.filter{border:1px solid #e5e7eb;background:#fff;padding:8px 12px;border-radius:999px;cursor:pointer}
+.filter.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gallery img{width:100%;height:170px;object-fit:cover;border-radius:10px}
+
+/* 关于我们（时间线宫格） */
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.ti{background:#fff;border-radius:14px;padding:16px;border:1px solid #eee}
+.ti h4{margin:0 0 6px}
+.ti .y{font-weight:700;color:#334155}
+.ti p{margin:0;color:#475569}
+
+/* 文案三栏 */
+.columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.col{background:#fff;border-radius:14px;padding:18px;border:1px solid #eee}
+
+/* 关于页面+BGM区 */
+.banner{position:relative;margin-top:22px;border-radius:16px;overflow:hidden;background:#111;color:#fff}
+.banner .bg{position:absolute;inset:0;background:linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);filter:brightness(1)}
+.banner .grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:28px}
+.banner h3{margin:0 0 6px}
+
+/* 彩蛋按钮/弹层 */
+.egg-btn{position:fixed;right:14px;bottom:86px;z-index:40;background:var(--brand);color:#fff;border:none;border-radius:999px;padding:12px 14px;box-shadow:0 10px 18px rgba(232,93,106,.3);cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60}
+.modal.show{display:flex}
+.modal .box{width:min(520px,92vw);background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center}
+.modal .box h3{margin-top:0}
+
+/* 底部播放器 */
+.player{position:fixed;left:0;right:0;bottom:0;background:#f8f9fa;color:#333;border-top:1px solid #e9ecef;z-index:55}
+.player .wrap{display:flex;align-items:center;gap:12px;padding:10px 14px}
+.btn{background:#e9ecef;border:1px solid #dee2e6;color:#495057;border-radius:10px;padding:8px 12px;cursor:pointer}
+.time{margin-left:auto;font-variant-numeric:tabular-nums}
+.progress{appearance:none;width:36vw;min-width:160px}
+.progress::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--brand);cursor:pointer}
+.progress::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#dee2e6}
+.progress::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--brand);cursor:pointer;border:none}
+.progress::-moz-range-track{height:6px;border-radius:3px;background:#dee2e6;border:none}
+@media (max-width:960px){
+  .stats .grid{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr 1fr}
+  .gallery{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr 1fr}
+  .columns{grid-template-columns:1fr}
+  .banner .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .nav ul{display:none}
+  .hamburger{display:block}
+  .cards{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr}
+  .banner .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="nav">
+  <div class="container wrap">
+    <div class="brand">送给永远18岁的朵拉</div>
+    <ul>
+      <li><a href="#home">首页</a></li>
+      <li><a href="#pretty">怎么能这么漂亮</a></li>
+      <li><a href="#about">关于我们</a></li>
+      <li><a href="#words">想对你说</a></li>
+      <li><a href="#more">关于这个网页</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger">☰</button>
+  </div>
+</nav>
+
+<!-- 移动端导航菜单 -->
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    <li><a href="#home">首页</a></li>
+    <li><a href="#pretty">怎么能这么漂亮</a></li>
+    <li><a href="#about">关于我们</a></li>
+    <li><a href="#words">想对你说</a></li>
+    <li><a href="#more">关于这个网页</a></li>
+  </ul>
+</div>
+
+<!-- 封面轮播 -->
+<header id="home" class="hero">
+  <div class="dots" id="dots"></div>
+  <div class="arrow left" id="prev">‹</div>
+  <div class="arrow right" id="next">›</div>
+  <div class="content">
+    <h1 id="hero-title">未知的未来里，然而此刻拥有你</h1>
+    <p id="hero-sub">某一天 某一刻 某次呼吸 我们终将再分离</p>
+    <a href="#stats" class="cta" id="unlock">点点我吧</a>
+    <p style="opacity:.8;margin-top:8px">（点击以解锁音乐播放）</p>
+  </div>
+  <!-- slides 动态插入 -->
+</header>
+
+<!-- 计数条 -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="grid">
+      <div class="stat"><div class="num" data-start-date="2017-07-11">0</div><div class="label">天的好友</div></div>
+      <div class="stat"><div class="num" data-to="1">0</div><div class="label">次出去玩</div></div>
+      <div class="stat"><div class="num" data-to="1">0</div><div class="label">次生日</div></div>
+      <div class="stat"><div class="num" data-to="2000">0</div><div class="label">公里的距离</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 图集 + 年份筛选 -->
+<section id="pretty" class="section container">
+  <h2>怎么能这么漂亮</h2><div class="hr"></div>
+  <p class="sub">（不太会挑照片😂）</p>
+  <div class="filters" id="filters">
+    <button class="filter active" data-year="all">全部</button>
+  </div>
+  <div class="gallery" id="gallery">
+    <!-- data-year 按钮筛选 -->
+    <img src="assets/img/photos/g1.jpg" data-year="2022" alt="">
+    <img src="assets/img/photos/g2.jpg" data-year="2021" alt="">
+    <img src="assets/img/photos/g3.jpg" data-year="2021" alt="">
+    <img src="assets/img/photos/g4.jpg" data-year="2020" alt="">
+    <img src="assets/img/photos/g5.jpg" data-year="2022" alt="">
+    <img src="assets/img/photos/g6.jpg" data-year="2020" alt="">
+  </div>
+</section>
+
+<!-- 关于我们（时间线宫格） -->
+<section id="about" class="section container">
+  <h2>关于我们</h2><div class="hr"></div>
+  <p class="sub">要说我们怎么认识的、怎么熟起来的，就在这里。</p>
+  <div class="timeline">
+    <div class="ti"><h4><span class="y">2017</span></h4><p>初次相识，缘分的开端。</p></div>
+    <div class="ti"><h4><span class="y">2020</span></h4><p>逐渐熟络，青涩与怦然心动。</p></div>
+    <div class="ti"><h4><span class="y">2021</span></h4><p>断断续续，却始终没有断掉牵挂。</p></div>
+    <div class="ti"><h4><span class="y">2024</span></h4><p>忙碌但是想念。</p></div>
+    <div class="ti"><h4><span class="y">2025</span></h4><p>很幸运！</p></div>
+    <div class="ti"><h4><span class="y">以后</span></h4><p>将会是很好的一年。</p></div>
+  </div>
+</section>
+
+<!-- 想对你说（三栏文案 + 顶部三栏段落） -->
+<section id="words" class="section container">
+  <h2>想对你说</h2><div class="hr"></div>
+  <p class="sub">说一些想说的，碎碎念也浪漫。</p>
+
+  <div class="columns" style="margin-bottom:22px">
+    <div class="col">从2017到2025，八年时光，我们一起走过了风风雨雨，这份感情值得我们好好珍惜。</div>
+    <div class="col">分别的次数和相遇的次数总是相等的，但对于我们来说，每次相遇都值得期待。</div>
+    <div class="col">这份礼物不够贵，但它确实很真诚。</div>
+  </div>
+
+
+</section>
+
+<!-- 关于这个网页 + BGM + 彩蛋提示 -->
+<section id="more" class="section container">
+  <div class="banner">
+    <div class="bg" style="background-image:url(assets/img/background/sunset.jpg)"></div>
+    <div class="grid">
+      <div>
+        <h3>关于这个网页</h3>
+        <p>写了好多行代码，出 bug 也不怕，只想让你喜欢。</p>
+      </div>
+      <div>
+        <h3>听听歌吧</h3>
+        <p>这是我一生中最勇敢的瞬间。你要如何，我们就如何。</p>
+      </div>
+      <div>
+        <h3>延申一下2022年8月14你给我的话</h3>
+        <p>愿君生羽翼，长空自在游；一化北冥鱼，沧海任遨游。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 彩蛋按钮 -->
+<button class="egg-btn" id="egg">🎁 彩蛋</button>
+<div class="modal" id="modal">
+  <div class="box">
+    <h3>给你的小彩蛋</h3>
+    <p>点开就说明你认真看完啦：）</p>
+    <audio id="egg-audio" src="assets/audio/egg.mp3" preload="auto" controls style="width:100%"></audio>
+    <div style="margin-top:12px"><button class="btn" id="close-modal">收下啦</button></div>
+  </div>
+</div>
+
+<!-- 底部播放器 -->
+<footer class="player">
+  <div class="wrap container">
+    <button class="btn" id="play">播放</button>
+    <div id="song">正在播放</div>
+    <input type="range" min="0" max="100" value="0" class="progress" id="progress">
+    <div class="time"><span id="cur">00:00</span> / <span id="dur">00:00</span></div>
+  </div>
+</footer>
+
+<!-- 音频 -->
+<audio id="bgm" src="assets/audio/bgm.mp3" preload="auto"></audio>
+
+<script>
+/* --------- 可替换的数据 --------- */
+// 提示：请将图片放入对应的目录
+const HERO_SLIDES = [
+  {img:'assets/img/background/hero1.jpg', title:'未知的未来里，然而此刻拥有你', sub:'从2017到2025，我们一起走过的时光'},
+  {img:'assets/img/background/hero2.jpg', title:'某一天 某一刻 某次呼吸', sub:'感谢相遇，让我们成为彼此生命中的光'},
+  {img:'assets/img/background/hero3.jpg', title:'Happy Birthday', sub:'愿你永远快乐，不只生日，而是生命中的每一天'}
+];
+
+/* --------- 轮播 --------- */
+const hero = document.querySelector('.hero');
+const dotsBox = document.getElementById('dots');
+let idx=0;
+HERO_SLIDES.forEach((s,i)=>{
+  const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); dotsBox.appendChild(d);
+  const el=document.createElement('div'); el.className='slide'+(i===0?' active':'');
+  el.innerHTML=`<div class="bg" style="background-image:url(${s.img})"></div><div class="shade"></div>`;
+  hero.appendChild(el);
+});
+const slides=[...document.querySelectorAll('.slide')];
+const dots=[...document.querySelectorAll('.dot')];
+const setSlide=i=>{
+  slides[idx].classList.remove('active'); dots[idx].classList.remove('active');
+  idx=(i+slides.length)%slides.length;
+  slides[idx].classList.add('active'); dots[idx].classList.add('active');
+  document.getElementById('hero-title').textContent=HERO_SLIDES[idx].title;
+  document.getElementById('hero-sub').textContent=HERO_SLIDES[idx].sub;
+};
+document.getElementById('prev').onclick=()=>setSlide(idx-1);
+document.getElementById('next').onclick=()=>setSlide(idx+1);
+dots.forEach((d,i)=>d.onclick=()=>setSlide(i));
+setInterval(()=>setSlide(idx+1), 8000);
+
+/* --------- 平滑跳转 --------- */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href'); if(id.length>1){ e.preventDefault(); document.querySelector(id).scrollIntoView({behavior:'smooth'}); }
+  })
+});
+
+/* --------- 播放器 & iOS 解锁 --------- */
+const audio=document.getElementById('bgm');
+const btnPlay=document.getElementById('play');
+const unlock=document.getElementById('unlock');
+const cur=document.getElementById('cur'), dur=document.getElementById('dur'), bar=document.getElementById('progress');
+
+const fmt=s=>{const m=Math.floor(s/60).toString().padStart(2,'0');const t=Math.floor(s%60).toString().padStart(2,'0');return `${m}:${t}`};
+const update=()=>{
+  bar.value = audio.duration? Math.floor(audio.currentTime/audio.duration*100) : 0;
+  cur.textContent=fmt(audio.currentTime||0);
+  dur.textContent=fmt(audio.duration||0);
+};
+btnPlay.onclick= async ()=>{
+  if(audio.paused){ try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){ /* 可能未解锁 */ } }
+  else {audio.pause(); btnPlay.textContent='播放'}
+};
+unlock.onclick= async ()=>{
+  try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){}
+};
+audio.addEventListener('timeupdate',update);
+audio.addEventListener('loadedmetadata',update);
+bar.oninput=()=>{ if(audio.duration){ audio.currentTime = bar.value/100*audio.duration; } };
+
+/* --------- 计算两个日期之间的天数 --------- */
+function calculateDaysBetweenDates(startDateString) {
+  const startDate = new Date(startDateString);
+  const endDate = new Date();
+  const timeDifference = endDate - startDate;
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  return daysDifference;
+}
+
+/* --------- 计数动画 --------- */
+const observer=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      const n=e.target.querySelector('.num'); 
+      let to;
+      
+      // 检查是否有起始日期属性，如果有则计算天数
+      if(n.dataset.startDate) {
+        to = calculateDaysBetweenDates(n.dataset.startDate);
+      } else {
+        to = parseInt(n.dataset.to,10);
+      }
+      
+      let v=0; const step=Math.max(1,Math.ceil(to/60));
+      const timer=setInterval(()=>{ v+=step; if(v>=to){v=to;clearInterval(timer)} n.textContent=v },20);
+      observer.unobserve(e.target);
+    }
+  })
+},{threshold:.4});
+document.querySelectorAll('.stat').forEach(s=>observer.observe(s));
+
+/* --------- 图集筛选（简化版，仅保留全部按钮） --------- */
+const filterBtn=document.querySelector('.filter');
+filterBtn.onclick=()=>{
+  filterBtn.classList.add('active'); // 保持激活状态
+};
+
+// 确保所有图片始终显示
+const pics=[...document.querySelectorAll('#gallery img')];
+pics.forEach(img=>{
+  img.style.display = 'block';
+});
+
+/* --------- 彩蛋弹层 --------- */
+const modal=document.getElementById('modal'), egg=document.getElementById('egg'), closeM=document.getElementById('close-modal'), eggAudio=document.getElementById('egg-audio');
+
+eggAudio.onerror=()=>{
+  // 音频加载错误处理
+  const audioError = document.createElement('p');
+  audioError.style.color='var(--brand)';
+  audioError.textContent='请添加实际的音频文件到 assets/audio/ 目录';
+  document.querySelector('.modal .box').appendChild(audioError);
+};
+
+egg.onclick=()=>{ modal.classList.add('show'); audio.volume=.4; }
+closeM.onclick=()=>{ modal.classList.remove('show'); audio.volume=1; eggAudio.pause(); eggAudio.currentTime=0; }
+modal.addEventListener('click',e=>{ if(e.target===modal) closeM.click(); });
+
+/* --------- 本地存储「已打开」徽记（可扩展） --------- */
+try{
+  if(!localStorage.getItem('opened')){ localStorage.setItem('opened', Date.now()); }
+}catch(err){}
+</script>
+<script>
+    // 汉堡菜单交互逻辑
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    hamburger.addEventListener('click', function() {
+      mobileNav.classList.toggle('show');
+    });
+    
+    // 点击导航项后关闭菜单
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', function() {
+        mobileNav.classList.remove('show');
+      });
+    });
+    
+    // 点击页面其他地方关闭菜单
+    document.addEventListener('click', function(event) {
+      if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
+        mobileNav.classList.remove('show');
+      }
+    });
+  </script>
+  </body>
+</html>
