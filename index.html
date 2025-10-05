@@ -108,8 +108,10 @@ a{color:inherit;text-decoration:none}
 
 /* 关于页面+BGM区 */
 .banner{position:relative;margin-top:22px;border-radius:16px;overflow:hidden;background:#111;color:#fff}
-.banner .bg{position:absolute;inset:0;background:linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);filter:brightness(1)}
-.banner .grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:28px}
+.banner .bg{position:absolute;inset:0;background:linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);filter:brightness(0.7);backdrop-filter:blur(5px)}
+/* 添加遮罩层 */
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);z-index:1}
+.banner .grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:28px;z-index:2}
 .banner h3{margin:0 0 6px}
 
 /* 彩蛋按钮/弹层 */
@@ -367,7 +369,7 @@ a{color:inherit;text-decoration:none}
     <div class="grid">
       <div>
         <h3>关于这个网页</h3>
-        <p>写了好多行代码，出 bug 也不怕，只想让你喜欢。</p>
+        <p>写了好多行代码，而且写的时候现学现卖，老是出bug，不过没关系，只想让你喜欢。</p>
       </div>
       <div>
         <h3>听听歌吧</h3>
