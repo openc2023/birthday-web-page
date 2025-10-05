@@ -146,25 +146,27 @@ a{color:inherit;text-decoration:none}
   width:20px;
   height:20px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e85d6a' d='M8.106 18.247C5.298 16.083 2 13.542 2 9.137C2 4.274 7.5.825 12 5.501l2 1.998a.75.75 0 0 0 1.06-1.06l-1.93-1.933C17.369 1.403 22 4.675 22 9.137c0 4.405-3.298 6.946-6.106 9.11q-.44.337-.856.664C14 19.729 13 20.5 12 20.5s-2-.77-3.038-1.59q-.417-.326-.856-.663'/%3E%3C/svg%3E");
-  background-size:contain;
+  background-size:18px 18px;
   background-repeat:no-repeat;
   background-position:center;
   cursor:pointer;
   border-radius:0;
-  background-color:transparent
+  background-color:transparent;
+  transform:translateY(-4px)/* 优化垂直对齐 */
 }
 .progress::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#dee2e6}
 .progress::-moz-range-thumb{
   width:20px;
   height:20px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e85d6a' d='M8.106 18.247C5.298 16.083 2 13.542 2 9.137C2 4.274 7.5.825 12 5.501l2 1.998a.75.75 0 0 0 1.06-1.06l-1.93-1.933C17.369 1.403 22 4.675 22 9.137c0 4.405-3.298 6.946-6.106 9.11q-.44.337-.856.664C14 19.729 13 20.5 12 20.5s-2-.77-3.038-1.59q-.417-.326-.856-.663'/%3E%3C/svg%3E");
-  background-size:contain;
+  background-size:18px 18px;
   background-repeat:no-repeat;
   background-position:center;
   cursor:pointer;
   border:none;
   border-radius:0;
-  background-color:transparent
+  background-color:transparent;
+  transform:translateY(-4px)/* 优化垂直对齐 */
 }
 .progress::-moz-range-track{height:6px;border-radius:3px;background:#dee2e6;border:none}
 
@@ -333,11 +335,11 @@ a{color:inherit;text-decoration:none}
 
 <!-- 彩蛋按钮 -->
 <button class="egg-btn" id="egg">
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="margin-right:6px;vertical-align:middle">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" style="margin-right:6px;vertical-align:middle;display:inline-block">
     <path fill="white" fill-rule="evenodd" d="M12 1.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M5.47 5.47a.75.75 0 0 1 1.06 0l.344.343a.75.75 0 0 1-1.061 1.06L5.47 6.53a.75.75 0 0 1 0-1.06m13.06 0a.75.75 0 0 1 0 1.06l-.343.344a.75.75 0 0 1-1.06-1.061l.343-.343a.75.75 0 0 1 1.06 0M1.25 12a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m18 0a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1-.75-.75M6.873 17.127a.75.75 0 0 1 0 1.06l-.343.343a.75.75 0 0 1-1.06-1.06l.343-.343a.75.75 0 0 1 1.06 0m10.254 0a.75.75 0 0 1 1.06 0l.343.343a.75.75 0 1 1-1.06 1.06l-.343-.343a.75.75 0 0 1 0-1.06M12 19.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75" clip-rule="evenodd"/>
     <path fill="white" d="M7 11.06c0 2.542 2.01 3.897 3.48 5.11c.52.427 1.02.83 1.52.83s1-.403 1.52-.83c1.47-1.213 3.48-2.568 3.48-5.11s-2.75-4.346-5-1.902c-2.25-2.444-5-.64-5 1.902"/>
   </svg>
-  彩蛋
+  <span style="vertical-align:middle;display:inline-block">彩蛋</span>
 </button>
 <div class="modal" id="modal">
   <div class="box">
@@ -476,9 +478,19 @@ bar.oninput=()=>{ if(audio.duration){ audio.currentTime = bar.value/100*audio.du
 
 /* --------- 计算两个日期之间的天数 --------- */
 function calculateDaysBetweenDates(startDateString) {
+  // 解析开始日期（假设是北京时间）
   const startDate = new Date(startDateString);
-  const endDate = new Date();
-  const timeDifference = endDate - startDate;
+  
+  // 创建当前日期，并转换为北京时间（UTC+8）
+  const now = new Date();
+  // 获取UTC时间戳并添加8小时（北京时间比UTC早8小时）
+  const beijingTime = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+  
+  // 设置时间为同一天的开始（午夜）
+  startDate.setHours(0, 0, 0, 0);
+  beijingTime.setHours(0, 0, 0, 0);
+  
+  const timeDifference = beijingTime - startDate;
   const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
   return daysDifference;
 }
