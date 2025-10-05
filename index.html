@@ -41,37 +41,15 @@ a{color:inherit;text-decoration:none}
 .hero p{opacity:.95;font-size:clamp(14px,2.2vw,18px)}
 .hero .cta{margin-top:18px;display:inline-block;background:var(--brand);color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 8px 16px rgba(232,93,106,.25)}
 .hero .cta:hover{filter:brightness(1.05)}
-/* 重写的左右箭头按钮 */
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  width:80px;
-  height:80px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:all .3s ease;
-  z-index:2;
-  /* 增加点击区域的视觉提示 */
-  background-color:rgba(255,255,255,0.1);
-  border-radius:50%;
-}
-.arrow svg{
-  fill:none;
-  stroke:#fff;
-  stroke-width:1.5;
-  transition:all .3s ease;
-  width:32px;
-  height:32px;
-}
-.arrow:hover svg{
-  transform:scale(1.15);
-  stroke:var(--brand);
-}
-.arrow.left{left:15px}
-.arrow.right{right:15px}
+/* 优化的左右箭头按钮 */
+.arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background: rgba(255,255,255,.2);backdrop-filter:blur(6px);cursor:pointer;color:#fff;transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);border:1px solid rgba(255,255,255,.1);z-index:2}
+.arrow:hover{background: rgba(255,255,255,.3);transform:translateY(-50%) scale(1.05);border-color:rgba(255,255,255,.3)}
+.arrow:active{transform:translateY(-50%) scale(0.95)}
+.arrow.left{left:20px}
+.arrow.right{right:20px}
+/* SVG图标样式 */
+.arrow-icon{transition:all .3s ease}
+.arrow:hover .arrow-icon{transform:scale(1.1)}
 .dots{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}
 .dot.active{background:#fff}
@@ -120,120 +98,21 @@ a{color:inherit;text-decoration:none}
 .banner h3{margin:0 0 6px}
 
 /* 彩蛋按钮/弹层 */
-.egg-btn{
-  position:fixed;
-  right:14px;
-  bottom:86px;
-  z-index:40;
-  background:var(--brand);
-  color:#fff;
-  border:none;
-  border-radius:999px;
-  padding:12px 14px;
-  box-shadow:0 10px 18px rgba(232,93,106,.3);
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-weight:600;
-  transition:all 0.3s ease;
-  animation:float 3s ease-in-out infinite;
-}
-
-/* 添加浮动动画 */
-@keyframes float {
-  0%, 100% { transform:translateY(0); }
-  50% { transform:translateY(-6px); }
-}
-
-.egg-btn:hover{
-  background:var(--brand-dark, #d94f5d);
-  transform:scale(1.05);
-  box-shadow:0 12px 24px rgba(232,93,106,.4);
-}
-
-.egg-btn:active{
-  transform:scale(0.98);
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:60;
-  backdrop-filter:blur(4px);
-  transition:opacity 0.3s ease;
-}
-
-.modal.show{
-  display:flex;
-  opacity:1;
-}
-
-.modal .box{
-  width:min(520px,92vw);
-  background:#fff;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,.25);
-  text-align:center;
-  transform:scale(0.95);
-  animation:modalShow 0.3s ease forwards;
-}
-
-@keyframes modalShow {
-  to { transform:scale(1); }
-}
-
-.modal .box h3{
-  margin-top:0;
-  color:var(--brand);
-}
+.egg-btn{position:fixed;right:14px;bottom:86px;z-index:40;background:var(--brand);color:#fff;border:none;border-radius:999px;padding:12px 14px;box-shadow:0 10px 18px rgba(232,93,106,.3);cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60}
+.modal.show{display:flex}
+.modal .box{width:min(520px,92vw);background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center}
+.modal .box h3{margin-top:0}
 
 /* 底部播放器 */
-.player{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  background:#f8f9fa;
-  color:#333;
-  border-top:1px solid #e9ecef;
-  z-index:55;
-}
+.player{position:fixed;left:0;right:0;bottom:0;background:#f8f9fa;color:#333;border-top:1px solid #e9ecef;z-index:55}
 .player .wrap{display:flex;align-items:center;gap:12px;padding:10px 14px}
 .btn{background:#e9ecef;border:1px solid #dee2e6;color:#495057;border-radius:10px;padding:8px 12px;cursor:pointer}
-#play{background:var(--brand);border-color:var(--brand);color:#fff}
-#play.pause{background:#6c757d;border-color:#6c757d}
 .time{margin-left:auto;font-variant-numeric:tabular-nums}
 .progress{appearance:none;width:36vw;min-width:160px}
-.progress::-webkit-slider-thumb{
-  appearance:none;
-  width:24px;
-  height:24px;
-  background-color:transparent;
-  cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e85d6a' d='M8.106 18.247C5.298 16.083 2 13.542 2 9.137C2 4.274 7.5.825 12 5.501l2 1.998a.75.75 0 0 0 1.06-1.06l-1.93-1.933C17.369 1.403 22 4.675 22 9.137c0 4.405-3.298 6.946-6.106 9.11q-.44.337-.856.664C14 19.729 13 20.5 12 20.5s-2-.77-3.038-1.59q-.417-.326-.856-.663'/%3E%3C/svg%3E");
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  margin-top:-9px;
-}
+.progress::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--brand);cursor:pointer}
 .progress::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#dee2e6}
-.progress::-moz-range-thumb{
-  width:24px;
-  height:24px;
-  background-color:transparent;
-  cursor:pointer;
-  border:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23e85d6a' d='M8.106 18.247C5.298 16.083 2 13.542 2 9.137C2 4.274 7.5.825 12 5.501l2 1.998a.75.75 0 0 0 1.06-1.06l-1.93-1.933C17.369 1.403 22 4.675 22 9.137c0 4.405-3.298 6.946-6.106 9.11q-.44.337-.856.664C14 19.729 13 20.5 12 20.5s-2-.77-3.038-1.59q-.417-.326-.856-.663'/%3E%3C/svg%3E");
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-}
+.progress::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--brand);cursor:pointer;border:none}
 .progress::-moz-range-track{height:6px;border-radius:3px;background:#dee2e6;border:none}
 @media (max-width:960px){
   .stats .grid{grid-template-columns:repeat(2,1fr)}
@@ -250,46 +129,6 @@ a{color:inherit;text-decoration:none}
   .gallery{grid-template-columns:1fr}
   .timeline{grid-template-columns:1fr}
   .banner .grid{grid-template-columns:1fr}
-  /* 底部播放器移动端适配 */
-  .player .wrap{
-    flex-wrap:wrap;
-    gap:8px;
-    padding:8px 10px;
-  }
-  .player .wrap > * {
-    flex:0 0 auto;
-  }
-  .progress{
-    width:100%;
-    min-width:0;
-    order:4;
-  }
-  .time{
-    margin-left:0;
-    margin-right:0;
-    white-space:nowrap;
-  }
-  #song{
-    flex:1;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  
-  /* 彩蛋按钮移动端优化 */
-  .egg-btn{
-    right:10px;
-    bottom:80px;
-    padding:10px 12px;
-    font-size:14px;
-    z-index:40;
-  }
-  
-  .egg-btn svg{
-    width:20px;
-    height:20px;
-  }
 }
 </style>
 </head>
@@ -324,21 +163,12 @@ a{color:inherit;text-decoration:none}
 <!-- 封面轮播 -->
 <header id="home" class="hero">
   <div class="dots" id="dots"></div>
+  <!-- 左右箭头按钮 - 使用SVG图标 -->
   <div class="arrow left" id="prev">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <g fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="12" r="10"/>
-        <path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/>
-      </g>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="arrow-icon"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/></g></svg>
   </div>
   <div class="arrow right" id="next">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <g fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="12" r="10"/>
-        <path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/>
-      </g>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="arrow-icon"><g fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/></g></svg>
   </div>
   <div class="content">
     <h1 id="hero-title">未知的未来里，然而此刻拥有你</h1>
@@ -370,8 +200,8 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="gallery" id="gallery">
     <!-- data-year 按钮筛选 -->
-#    <img src="assets/img/photos/g1.jpg" data-year="2022" alt="">
-#    <img src="assets/img/photos/g2.jpg" data-year="2021" alt="">
+    <img src="assets/img/photos/g1.jpg" data-year="2022" alt="">
+    <img src="assets/img/photos/g2.jpg" data-year="2021" alt="">
     <img src="assets/img/photos/g3.jpg" data-year="2021" alt="">
     <img src="assets/img/photos/g4.jpg" data-year="2020" alt="">
     <img src="assets/img/photos/g5.jpg" data-year="2022" alt="">
@@ -430,10 +260,10 @@ a{color:inherit;text-decoration:none}
 </section>
 
 <!-- 彩蛋按钮 -->
-<button class="egg-btn" id="egg"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="color:#FFE8F0"><path fill="currentColor" fill-rule="evenodd" d="M12 1.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0V2a.75.75 0 0 1 .75-.75M5.47 5.47a.75.75 0 0 1 1.06 0l.344.343a.75.75 0 0 1-1.061 1.06L5.47 6.53a.75.75 0 0 1 0-1.06m13.06 0a.75.75 0 0 1 0 1.06l-.343.344a.75.75 0 0 1-1.06-1.061l.343-.343a.75.75 0 0 1 1.06 0M1.25 12a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5H2a.75.75 0 0 1-.75-.75m18 0a.75.75 0 0 1 .75-.75h2a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1-.75-.75M6.873 17.127a.75.75 0 0 1 0 1.06l-.343.343a.75.75 0 0 1-1.06-1.06l.343-.343a.75.75 0 0 1 1.06 0m10.254 0a.75.75 0 0 1 1.06 0l.343.343a.75.75 0 1 1-1.06 1.06l-.343-.343a.75.75 0 0 1 0-1.06M12 19.25a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 1 .75-.75" clip-rule="evenodd"/><path fill="currentColor" d="M7 11.06c0 2.542 2.01 3.897 3.48 5.11c.52.427 1.02.83 1.52.83s1-.403 1.52-.83c1.47-1.213 3.48-2.568 3.48-5.11s-2.75-4.346-5-1.902c-2.25-2.444-5-.64-5 1.902"/></svg> 彩蛋</button>
+<button class="egg-btn" id="egg">🎁 彩蛋</button>
 <div class="modal" id="modal">
   <div class="box">
-    <h3>给你的小彩蛋❤️</h3>
+    <h3>给你的小彩蛋</h3>
     <p>点开就说明你认真看完啦：）</p>
     <audio id="egg-audio" src="assets/audio/egg.mp3" preload="auto" controls style="width:100%"></audio>
     <div style="margin-top:12px"><button class="btn" id="close-modal">收下啦</button></div>
@@ -443,7 +273,7 @@ a{color:inherit;text-decoration:none}
 <!-- 底部播放器 -->
 <footer class="player">
   <div class="wrap container">
-    <button class="btn" id="play"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M19.85 4.7c-.398-1.124-1.497-1.821-2.656-1.683a2.7 2.7 0 0 0-.77.24c-.256.114-.567.274-.95.47L13 4.997c-.284.145-.507.259-.698.409a2.6 2.6 0 0 0-.942 1.563c-.045.242-.045.497-.045.823v6.506a4.27 4.27 0 0 0-2.971-1.206c-2.4 0-4.344 1.994-4.344 4.454S5.944 22 8.343 22s4.343-1.994 4.343-4.454v-6.363c.43.226.926.325 1.434.265c.261-.032.514-.125.771-.24c.255-.114.566-.274.949-.47l2.475-1.27c.285-.145.507-.259.698-.408c.49-.385.826-.942.942-1.564c.045-.242.045-.497.045-.823v-.077c0-.439 0-.796-.015-1.08a3 3 0 0 0-.135-.816"/></svg></button>
+    <button class="btn" id="play">播放</button>
     <div id="song">正在播放</div>
     <input type="range" min="0" max="100" value="0" class="progress" id="progress">
     <div class="time"><span id="cur">00:00</span> / <span id="dur">00:00</span></div>
@@ -506,11 +336,11 @@ const update=()=>{
   dur.textContent=fmt(audio.duration||0);
 };
 btnPlay.onclick= async ()=>{
-  if(audio.paused){ try{ await audio.play(); btnPlay.classList.add('pause'); }catch(e){ /* 可能未解锁 */ } }
-  else {audio.pause(); btnPlay.classList.remove('pause');}
+  if(audio.paused){ try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){ /* 可能未解锁 */ } }
+  else {audio.pause(); btnPlay.textContent='播放'}
 };
 unlock.onclick= async ()=>{
-  try{ await audio.play(); btnPlay.classList.add('pause'); }catch(e){}
+  try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){}
 };
 audio.addEventListener('timeupdate',update);
 audio.addEventListener('loadedmetadata',update);
@@ -562,153 +392,22 @@ pics.forEach(img=>{
 /* --------- 彩蛋弹层 --------- */
 const modal=document.getElementById('modal'), egg=document.getElementById('egg'), closeM=document.getElementById('close-modal'), eggAudio=document.getElementById('egg-audio');
 
-// 优化音频加载错误处理
-function handleAudioError() {
+eggAudio.onerror=()=>{
+  // 音频加载错误处理
   const audioError = document.createElement('p');
   audioError.style.color='var(--brand)';
-  audioError.style.marginTop='12px';
   audioError.textContent='请添加实际的音频文件到 assets/audio/ 目录';
-  const box = document.querySelector('.modal .box');
-  
-  // 避免重复添加错误信息
-  if (!box.querySelector('p[style*="var(--brand)"]')) {
-    box.appendChild(audioError);
-  }
-}
-
-eggAudio.onerror=handleAudioError;
-
-// 检查音频是否可播放
-function checkAudioPlayability() {
-  eggAudio.oncanplaythrough = null;
-  
-  // 使用try-catch处理可能的音频加载问题
-  try {
-    // 预加载音频，但不自动播放
-    eggAudio.load();
-  } catch (error) {
-    handleAudioError();
-  }
-}
-
-// 页面加载完成后检查音频
-window.addEventListener('DOMContentLoaded', checkAudioPlayability);
-
-// 优化彩蛋按钮交互
-let isModalOpen = false;
-
-egg.onclick=()=>{
-  if (!isModalOpen) {
-    // 添加触摸反馈动画
-    egg.classList.add('pulse');
-    setTimeout(() => egg.classList.remove('pulse'), 300);
-    
-    modal.classList.add('show');
-    isModalOpen = true;
-    
-    // 降低背景音乐音量
-    if (audio && typeof audio.volume !== 'undefined') {
-      audio.volume = 0.4;
-    }
-    
-    // 尝试播放彩蛋音频
-    try {
-      if (eggAudio) {
-        eggAudio.currentTime = 0;
-        eggAudio.play().catch(e => {
-          console.log('Audio play failed:', e);
-          handleAudioError();
-        });
-      }
-    } catch (e) {
-      handleAudioError();
-    }
-  }
+  document.querySelector('.modal .box').appendChild(audioError);
 };
 
-closeM.onclick=()=>{
-  if (isModalOpen) {
-    modal.classList.remove('show');
-    isModalOpen = false;
-    
-    // 恢复背景音乐音量
-    if (audio && typeof audio.volume !== 'undefined') {
-      audio.volume = 1;
-    }
-    
-    // 停止彩蛋音频
-    try {
-      if (eggAudio) {
-        eggAudio.pause();
-        eggAudio.currentTime = 0;
-      }
-    } catch (e) {
-      console.log('Audio pause failed:', e);
-    }
-  }
-};
-
-modal.addEventListener('click',e=>{
-  if(e.target===modal) {
-    closeM.click();
-  }
-});
-
-// 移动端优化：触摸事件支持
-if ('ontouchstart' in window) {
-  egg.addEventListener('touchstart', function(e) {
-    // 阻止默认行为，避免触发其他事件
-    e.preventDefault();
-    this.onclick();
-  });
-  
-  closeM.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    this.onclick();
-  });
-  
-  modal.addEventListener('touchstart', function(e) {
-    if(e.target===modal) {
-      e.preventDefault();
-      closeM.click();
-    }
-  });
-}
-
-// 优化键盘可访问性
-modal.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeM.click();
-  }
-});
-
-// 设置焦点管理
-modal.addEventListener('transitionend', function() {
-  if (isModalOpen) {
-    closeM.focus();
-  } else {
-    egg.focus();
-  }
-});
+egg.onclick=()=>{ modal.classList.add('show'); audio.volume=.4; }
+closeM.onclick=()=>{ modal.classList.remove('show'); audio.volume=1; eggAudio.pause(); eggAudio.currentTime=0; }
+modal.addEventListener('click',e=>{ if(e.target===modal) closeM.click(); });
 
 /* --------- 本地存储「已打开」徽记（可扩展） --------- */
 try{
-  if(!localStorage.getItem('opened')){
-    localStorage.setItem('opened', Date.now());
-  }
+  if(!localStorage.getItem('opened')){ localStorage.setItem('opened', Date.now()); }
 }catch(err){}
-
-// 为按钮添加触摸反馈样式
-.egg-btn.pulse {
-  animation: pulse 0.3s ease-in-out;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
 </script>
 <script>
     // 汉堡菜单交互逻辑
@@ -734,4 +433,4 @@ try{
     });
   </script>
   </body>
-  </html>
+</html>
