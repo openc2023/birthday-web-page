@@ -11,6 +11,10 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:#f6f7fb;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;line-height:1.6}
+/* 优化移动端字体渲染 */
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+/* 优化移动端点击反馈 */
+a,button,input{touch-action:manipulation;outline:none;-webkit-tap-highlight-color:transparent}
 a{color:inherit;text-decoration:none}
 .container{width:min(1100px,92vw);margin:0 auto}
 
@@ -24,25 +28,35 @@ a{color:inherit;text-decoration:none}
 /* 汉堡菜单按钮 */
 .hamburger{display:none;background:none;border:none;font-size:24px;cursor:pointer;margin-left:auto}
 /* 移动端导航菜单 */
-.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.1);z-index:49}
-.mobile-nav.show{display:block}
+.mobile-nav{display:none;position:fixed;top:60px;left:0;right:0;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.1);z-index:49;transition:transform 0.3s ease-out, opacity 0.3s ease-out;transform: translateY(-10px);opacity: 0;visibility: hidden;}
+.mobile-nav.show{display:block;transform: translateY(0);opacity: 1;visibility: visible}
 .mobile-nav ul{display:flex;flex-direction:column;gap:0;padding:0;margin:0}
 .mobile-nav li{border-bottom:1px solid #eee}
 .mobile-nav a{display:block;padding:16px 20px}
 
-/* 封面轮播 */
+/* 封面轮播 - 移动端优化 */
 .hero{position:relative;height:78vh;min-height:520px;display:grid;place-items:center;color:#fff;overflow:hidden;background:#000}
+/* 移动端调整轮播高度 */
+@media (max-width:768px){
+  .hero{height:85vh;min-height:450px}
+}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease}
 .slide.active{opacity:1}
 .slide .bg{position:absolute;inset:0;background-position:center;background-size:cover;filter:brightness(.65)}
 .slide .shade{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,.1),rgba(0,0,0,.6))}
 .hero .content{position:relative;z-index:2;text-align:center;padding:0 6vw}
-.hero h1{font-size:clamp(22px,3.5vw,40px);margin:.2em 0 .4em}
-.hero p{opacity:.95;font-size:clamp(14px,2.2vw,18px)}
-.hero .cta{margin-top:18px;display:inline-block;background:var(--brand);color:#fff;padding:12px 18px;border-radius:999px;box-shadow:0 8px 16px rgba(232,93,106,.25)}
+.hero h1{font-size:clamp(22px,5vw,40px);margin:.2em 0 .4em;line-height:1.2}
+.hero p{opacity:.95;font-size:clamp(14px,3vw,18px)}
+.hero .cta{margin-top:18px;display:inline-block;background:var(--brand);color:#fff;padding:12px 20px;border-radius:999px;box-shadow:0 8px 16px rgba(232,93,106,.25);font-size:16px}
 .hero .cta:hover{filter:brightness(1.05)}
 /* 优化的左右箭头按钮 */
 .arrow{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background: rgba(255,255,255,.2);backdrop-filter:blur(6px);cursor:pointer;color:#fff;transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);border:1px solid rgba(255,255,255,.1);z-index:2}
+/* 移动端调整箭头按钮位置 */
+@media (max-width:560px){
+  .arrow{width:36px;height:36px}
+  .arrow.left{left:12px}
+  .arrow.right{right:12px}
+}
 .arrow:hover{background: rgba(255,255,255,.3);transform:translateY(-50%) scale(1.05);border-color:rgba(255,255,255,.3)}
 .arrow:active{transform:translateY(-50%) scale(0.95)}
 .arrow.left{left:20px}
@@ -63,7 +77,7 @@ a{color:inherit;text-decoration:none}
 
 /* 分节标题 */
 .section{padding:56px 0}
-.section h2{font-size:28px;text-align:center;margin:0 0 6px}
+.section h2{font-size:clamp(24px,5vw,28px);text-align:center;margin:0 0 6px}
 .section .sub{color:var(--muted);text-align:center;margin-bottom:22px}
 .hr{width:72px;height:4px;background:var(--brand);margin:8px auto 24px;border-radius:6px}
 
@@ -78,7 +92,8 @@ a{color:inherit;text-decoration:none}
 .filter{border:1px solid #e5e7eb;background:#fff;padding:8px 12px;border-radius:999px;cursor:pointer}
 .filter.active{background:var(--brand);border-color:var(--brand);color:#fff}
 .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.gallery img{width:100%;height:170px;object-fit:cover;border-radius:10px}
+.gallery img{width:100%;height:170px;object-fit:cover;border-radius:10px;transition:transform 0.3s ease}
+.gallery img:active{transform:scale(0.98)}
 
 /* 关于我们（时间线宫格） */
 .timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
@@ -99,12 +114,16 @@ a{color:inherit;text-decoration:none}
 
 /* 彩蛋按钮/弹层 */
 .egg-btn{position:fixed;right:14px;bottom:86px;z-index:40;background:var(--brand);color:#fff;border:none;border-radius:999px;padding:12px 14px;box-shadow:0 10px 18px rgba(232,93,106,.3);cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60}
+/* 移动端调整彩蛋按钮位置和大小 */
+@media (max-width:560px){
+  .egg-btn{right:12px;bottom:76px;padding:10px 12px}
+}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:60;backdrop-filter:blur(4px)}
 .modal.show{display:flex}
-.modal .box{width:min(520px,92vw);background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center}
+.modal .box{width:min(520px,92vw);background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);text-align:center;max-height:90vh;overflow-y:auto}
 .modal .box h3{margin-top:0}
 
-/* 底部播放器 */
+/* 底部播放器 - 移动端优化 */
 .player{position:fixed;left:0;right:0;bottom:0;background:#f8f9fa;color:#333;border-top:1px solid #e9ecef;z-index:55}
 .player .wrap{display:flex;align-items:center;gap:12px;padding:10px 14px}
 .btn{background:#e9ecef;border:1px solid #dee2e6;color:#495057;border-radius:10px;padding:8px 12px;cursor:pointer}
@@ -114,6 +133,8 @@ a{color:inherit;text-decoration:none}
 .progress::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#dee2e6}
 .progress::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--brand);cursor:pointer;border:none}
 .progress::-moz-range-track{height:6px;border-radius:3px;background:#dee2e6;border:none}
+
+/* 移动端媒体查询 - 完善响应式布局 */
 @media (max-width:960px){
   .stats .grid{grid-template-columns:repeat(2,1fr)}
   .cards{grid-template-columns:1fr 1fr}
@@ -121,6 +142,7 @@ a{color:inherit;text-decoration:none}
   .timeline{grid-template-columns:1fr 1fr}
   .columns{grid-template-columns:1fr}
   .banner .grid{grid-template-columns:repeat(2,1fr)}
+  .progress{width:28vw}
 }
 @media (max-width:560px){
   .nav ul{display:none}
@@ -129,6 +151,22 @@ a{color:inherit;text-decoration:none}
   .gallery{grid-template-columns:1fr}
   .timeline{grid-template-columns:1fr}
   .banner .grid{grid-template-columns:1fr}
+  .player .wrap{gap:8px;padding:8px 10px}
+  .progress{width:20vw;min-width:120px}
+  .time{font-size:12px}
+  .btn{padding:6px 10px}
+  /* 优化移动端间距和字体 */
+  .section{padding:40px 0}
+  .stat{padding:16px}
+  .stat .num{font-size:28px}
+  .gallery{gap:8px}
+  .gallery img{height:150px}
+}
+
+/* 横屏模式优化 */
+@media (orientation:landscape) and (max-width:768px){
+  .hero{min-height:350px}
+  .player .wrap{padding:6px 10px}
 }
 </style>
 </head>
@@ -186,7 +224,7 @@ a{color:inherit;text-decoration:none}
       <div class="stat"><div class="num" data-start-date="2017-07-11">0</div><div class="label">天相识</div></div>
       <div class="stat"><div class="num" data-to="1">0</div><div class="label">次出去玩</div></div>
       <div class="stat"><div class="num" data-to="1">0</div><div class="label">次生日</div></div>
-      <div class="stat"><div class="num" data-to="2000">0</div><div class="label">公里的距离</div></div>
+      <div class="stat"><div class="num" data-to="2000">0</div><div class="label">公里数的距离</div></div>
     </div>
   </div>
 </section>
@@ -263,7 +301,7 @@ a{color:inherit;text-decoration:none}
 <button class="egg-btn" id="egg">🎁 彩蛋</button>
 <div class="modal" id="modal">
   <div class="box">
-    <h3>给你的小彩蛋</h3>
+    <h3>给你的小彩蛋❤️</h3>
     <p>点开就说明你认真看完啦：）</p>
     <audio id="egg-audio" src="assets/audio/egg.mp3" preload="auto" controls style="width:100%"></audio>
     <div style="margin-top:12px"><button class="btn" id="close-modal">收下啦</button></div>
@@ -311,6 +349,31 @@ const setSlide=i=>{
   document.getElementById('hero-title').textContent=HERO_SLIDES[idx].title;
   document.getElementById('hero-sub').textContent=HERO_SLIDES[idx].sub;
 };
+
+// 轮播触摸滑动支持
+let touchStartX = 0;
+let touchEndX = 0;
+
+hero.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+hero.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const swipeThreshold = 50;
+  if (touchEndX < touchStartX - swipeThreshold) {
+    // 左滑
+    setSlide(idx + 1);
+  } else if (touchEndX > touchStartX + swipeThreshold) {
+    // 右滑
+    setSlide(idx - 1);
+  }
+}
+
 document.getElementById('prev').onclick=()=>setSlide(idx-1);
 document.getElementById('next').onclick=()=>setSlide(idx+1);
 dots.forEach((d,i)=>d.onclick=()=>setSlide(i));
@@ -335,13 +398,38 @@ const update=()=>{
   cur.textContent=fmt(audio.currentTime||0);
   dur.textContent=fmt(audio.duration||0);
 };
+
+// 移动端自动播放尝试
+function setupAudio() {
+  // 尝试在用户交互时自动播放
+  document.body.addEventListener('touchstart', startAudio, { once: true });
+  document.body.addEventListener('click', startAudio, { once: true });
+}
+
+function startAudio() {
+  try {
+    audio.play().then(() => {
+      btnPlay.textContent = '暂停';
+    }).catch(e => {
+      // 播放失败，继续使用按钮播放
+    });
+  } catch (e) {
+    console.log('音频播放初始化失败');
+  }
+}
+
+// 初始化音频
+setupAudio();
+
 btnPlay.onclick= async ()=>{
   if(audio.paused){ try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){ /* 可能未解锁 */ } }
   else {audio.pause(); btnPlay.textContent='播放'}
 };
+
 unlock.onclick= async ()=>{
   try{ await audio.play(); btnPlay.textContent='暂停'; }catch(e){}
 };
+
 audio.addEventListener('timeupdate',update);
 audio.addEventListener('loadedmetadata',update);
 bar.oninput=()=>{ if(audio.duration){ audio.currentTime = bar.value/100*audio.duration; } };
@@ -400,8 +488,8 @@ eggAudio.onerror=()=>{
   document.querySelector('.modal .box').appendChild(audioError);
 };
 
-egg.onclick=()=>{ modal.classList.add('show'); audio.volume=.4; }
-closeM.onclick=()=>{ modal.classList.remove('show'); audio.volume=1; eggAudio.pause(); eggAudio.currentTime=0; }
+egg.onclick=()=>{ modal.classList.add('show'); audio.volume=.4; };
+closeM.onclick=()=>{ modal.classList.remove('show'); audio.volume=1; eggAudio.pause(); eggAudio.currentTime=0; };
 modal.addEventListener('click',e=>{ if(e.target===modal) closeM.click(); });
 
 /* --------- 本地存储「已打开」徽记（可扩展） --------- */
@@ -410,18 +498,21 @@ try{
 }catch(err){}
 </script>
 <script>
-    // 汉堡菜单交互逻辑
+    // 汉堡菜单交互逻辑优化
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
     
     hamburger.addEventListener('click', function() {
       mobileNav.classList.toggle('show');
+      // 优化菜单图标切换
+      hamburger.textContent = mobileNav.classList.contains('show') ? '✕' : '☰';
     });
     
     // 点击导航项后关闭菜单
     document.querySelectorAll('.mobile-nav a').forEach(link => {
       link.addEventListener('click', function() {
         mobileNav.classList.remove('show');
+        hamburger.textContent = '☰';
       });
     });
     
@@ -429,7 +520,37 @@ try{
     document.addEventListener('click', function(event) {
       if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
         mobileNav.classList.remove('show');
+        hamburger.textContent = '☰';
       }
+    });
+    
+    // 屏幕旋转时的响应式处理
+    window.addEventListener('resize', function() {
+      // 如果窗口宽度大于560px，确保导航菜单关闭
+      if (window.innerWidth > 560 && mobileNav.classList.contains('show')) {
+        mobileNav.classList.remove('show');
+        hamburger.textContent = '☰';
+      }
+    });
+    
+    // 图片懒加载优化
+    document.addEventListener('DOMContentLoaded', function() {
+      // 为所有图片添加淡入效果
+      const images = document.querySelectorAll('img');
+      images.forEach(img => {
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.5s ease';
+        
+        // 图片加载完成后显示
+        img.onload = function() {
+          img.style.opacity = '1';
+        };
+        
+        // 立即触发已缓存图片的加载事件
+        if (img.complete) {
+          img.onload();
+        }
+      });
     });
   </script>
   </body>
